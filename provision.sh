@@ -1,3 +1,5 @@
+#!/bin/bash
+
 export DEBIAN_FRONTEND=noninteractive
 apt-get update && apt-get install -qy iproute2 
 apt-get install -qy apt-utils ca-certificates lib32gcc1 net-tools lib32stdc++6 lib32z1 lib32z1-dev curl telnet
