@@ -2,7 +2,7 @@
 
 ip route change default via 172.17.42.254
 
-sed -i "s%^  <property name=\"ServerPort\" 				value=\"[0-9]{0,5}\"/>%  <property name="ServerPort" 				value=\"${PORT_26900}\"/>%" /server/serverconfig.xml
+sed -i "s%^  <property name=\"ServerPort\" 				value=\"[0-9]{0,5}\"/>%  <property name=\"ServerPort\" 				value=\"${PORT_26900}\"/>%" /server/serverconfig.xml
 
 function _shutdown() {
   echo "Shutting down gracefully.."
