@@ -8,4 +8,4 @@ function _shutdown() {
 }
 trap _shutdown SIGTERM SIGINT
 
-LD_LIBRARY_PATH=/home/steam/app/ /home/steam/app/7DaysToDieServer.x86_64 -logfile /dev/stdout -configfile=/home/steam/app/serverconfig.xml -quit -batchmode -nographics -dedicated
+cd /server/ && ./7DaysToDieServer.x86_64 -logfile /dev/stdout -configfile=./serverconfig.xml -quit -batchmode -nographics -dedicated
