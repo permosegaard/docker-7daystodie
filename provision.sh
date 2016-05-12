@@ -12,6 +12,6 @@ chown -R steam:steam /home/steam
 mkdir -p /home/steam/steamcmd/
 curl -s "https://steamcdn-a.akamaihd.net/client/installer/steamcmd_linux.tar.gz" | tar -vzx -C "/home/steam/steamcmd/"
 
-/home/steam/steamcmd/steamcmd.sh +login $STEAM_USERNAME $STEAM_PASSWORD +force_install_dir /home/steam/app +app_update 294420 +quit
+/home/steam/steamcmd/steamcmd.sh +force_install_dir /home/steam/app +app_update 294420 +quit
 
 apt-get clean && rm -Rf /var/lib/apt/lists/*
