@@ -4,7 +4,7 @@ ip route change default via 172.17.42.254 && echo "nameserver 172.17.42.254" > /
 
 ulimit -n 2048
 
-/root/steamcmd/steamcmd.sh +login anonymous +force_install_dir /server +app_update 294420 validate +quit
+/root/steamcmd/steamcmd.sh +login anonymous +force_install_dir /server +app_update 294420 +quit
 
 sed -i "s%^  <property name=\"ServerPort\"[ \t]*value=\"[0-9]*\"/>%  <property name=\"ServerPort\" value=\"${PORT_26900}\"/>%" /server/serverconfig.xml
 
