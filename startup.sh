@@ -1,7 +1,6 @@
 #!/bin/bash
 
-ip route change default via 172.17.42.254
-echo "nameserver 172.17.42.254" > /etc/resolv.conf
+ip route change default via 172.17.42.254 && echo "nameserver 172.17.42.254" > /etc/resolv.conf
 
 /root/steamcmd/steamcmd.sh +login anonymous +force_install_dir /server +app_update 294420 validate +quit
 
