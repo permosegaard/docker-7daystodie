@@ -7,6 +7,7 @@ ulimit -n 2048
 /root/steamcmd/steamcmd.sh +login anonymous +force_install_dir /server +app_update 294420 +quit
 
 sed -i "s%^  <property name=\"ServerPort\"[ \t]*value=\"[0-9]*\"/>%  <property name=\"ServerPort\" value=\"${PORT_26900}\"/>%" /server/serverconfig.xml
+sed -i "s%^  <property name=\"ServerName\"[ \t]*value=\"My Game Host\"/>%  <property name=\"ServerName\" value=\"${CONTAINER_NAME}\"/>%" /server/serverconfig.xml
 
 function _shutdown() {
   echo "Shutting down gracefully.."
