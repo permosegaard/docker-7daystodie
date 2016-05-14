@@ -1,6 +1,6 @@
 #!/bin/bash
 
-ip route change default via 172.17.42.254 && echo "nameserver 172.17.42.254" > /etc/resolv.conf
+ip route change default via 172.17.42.254
 
 ulimit -n 2048
 
