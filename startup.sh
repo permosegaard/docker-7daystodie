@@ -4,7 +4,7 @@ ip route change default via 172.17.42.254
 if [ -z "${STEAM_USER}" ]; then STEAM_CREDENTIALS="anonymous"; else STEAM_CREDENTIALS="${STEAM_USERNAME} ${STEAM_PASSWORD}"; fi
 
 # start seed update section
-# shell in and rsync /server/* and /root/steamcmd/* to host /seed/$type/{game,steamcmd}
+# shell in and rsync /server/* and /root/{Steam,steamcmd}/* to host /seed/$type/{game,steam,steamcmd}
 curl -s "https://steamcdn-a.akamaihd.net/client/installer/steamcmd_linux.tar.gz" | tar -vzx -C "/root/steamcmd/"
 /root/steamcmd/steamcmd.sh +login $STEAM_CREDENTIALS +force_install_dir /server +app_update 294420 +quit
 apt-get update && apt-get install -y rsync openssh-client && echo && echo "update complete, pausing..." && read && exit
