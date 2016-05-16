@@ -7,7 +7,8 @@ ulimit -n 2048
 if [ "$( find /server/ -type f | wc -l )" -lt "1" ]
 then
   echo "copying seed across... this may take some time depending on the game size"
-  cp -Ra /seed/${CONTAINER_TYPE}/game/ /server/ # change to hard/soft links
+  #cp -Rf /seed/${CONTAINER_TYPE}/game/* /server/ # change to hard/soft links
+  #cp -Rf /seed/${CONTAINER_TYPE}/steamcmd/* /root/steamcmd/ # change to hard/soft links
 fi
 
 if [ -z "${STEAM_USER}" ]; then CREDENTIALS="anonymous"; else CREDENTIALS="${STEAM_USERNAME} ${STEAM_PASSWORD}"; fi
