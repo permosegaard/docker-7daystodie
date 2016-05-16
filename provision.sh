@@ -9,6 +9,4 @@ apt-get install -qy apt-utils ca-certificates lib32gcc1 net-tools lib32stdc++6 l
 
 mkdir -p /root/steamcmd /server
 
-curl -s "https://steamcdn-a.akamaihd.net/client/installer/steamcmd_linux.tar.gz" | tar -vzx -C "/root/steamcmd/"
-
 apt-get clean && rm -Rf /var/lib/apt/lists/*
