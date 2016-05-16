@@ -16,6 +16,7 @@ then
   rm -Rf /server/* /root/steamcmd/*
   cp -Rf /seed/${CONTAINER_TYPE}/game/* /server/ # change to hard/soft links
   cp -Rf /seed/${CONTAINER_TYPE}/steamcmd/* /root/steamcmd/ # change to hard/soft links
+  cp -Rf /seed/${CONTAINER_TYPE}/steam/* /root/Steam/ # change to hard/soft links
 fi
 
 root/steamcmd/steamcmd.sh +login $STEAM_CREDENTIALS +force_install_dir /server +app_update 294420 validate +quit
