@@ -4,7 +4,12 @@ ip route change default via 172.17.42.254
 
 ulimit -n 2048
 
-if [ "$( find /server/ -type f | wc -l )" -lt "1" ]; then echo "copying seed across... this may take some time depending on the game size"; time cp -Ra /seed/${CONTAINER_TYPE}/game/ /server/; fi
+if [ "$( find /server/ -type f | wc -l )" -lt "1" ]
+then
+  echo "copying seed across... this may take some time depending on the game size"
+  cp -Ra /seed/${CONTAINER_TYPE}/game/ /server/ # change to hard/soft links
+fi
+
 if [  -z "${STEAM_USER}"  ]; CREDENTIALS="anonymous"; else CREDENTIALS="${STEAM_USERNAME} ${STEAM_PASSWORD}"; fi
 /root/steamcmd/steamcmd.sh +login $CREDENTIALS +force_install_dir /server +app_update 294420 validate +quit
 
