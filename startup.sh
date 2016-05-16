@@ -14,9 +14,9 @@ if [ "$( find /server/ -type f | wc -l )" -lt "1" ]
 then
   echo "copying seed across... this may take some time depending on the game size"
   rm -Rf /server/* /root/Steam/* /root/steamcmd/*
-  cp -Rfs /seed/${CONTAINER_TYPE}/game/* /server/ # change to hard/soft links
-  cp -Rfs /seed/${CONTAINER_TYPE}/steamcmd/* /root/steamcmd/ # change to hard/soft links
-  cp -Rfs /seed/${CONTAINER_TYPE}/steam/* /root/Steam/ # change to hard/soft links
+  cp -Rfs /seed/${CONTAINER_TYPE}/game/* /server/
+  cp -Rfs /seed/${CONTAINER_TYPE}/steamcmd/* /root/steamcmd/
+  cp -Rfs /seed/${CONTAINER_TYPE}/steam/* /root/Steam/
 fi
 
 root/steamcmd/steamcmd.sh +login $STEAM_CREDENTIALS +force_install_dir /server +app_update 294420 +quit
