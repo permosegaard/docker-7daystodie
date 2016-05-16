@@ -10,7 +10,7 @@ then
   cp -Ra /seed/${CONTAINER_TYPE}/game/ /server/ # change to hard/soft links
 fi
 
-if [  -z "${STEAM_USER}"  ]; CREDENTIALS="anonymous"; else CREDENTIALS="${STEAM_USERNAME} ${STEAM_PASSWORD}"; fi
+if [ -z "${STEAM_USER}" ]; then CREDENTIALS="anonymous"; else CREDENTIALS="${STEAM_USERNAME} ${STEAM_PASSWORD}"; fi
 /root/steamcmd/steamcmd.sh +login $CREDENTIALS +force_install_dir /server +app_update 294420 validate +quit
 
 pause
