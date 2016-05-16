@@ -17,6 +17,7 @@ then
   cp -Rfs /seed/${CONTAINER_TYPE}/game/* /server/
   cp -Rfs /seed/${CONTAINER_TYPE}/steamcmd/* /root/steamcmd/
   cp -Rfs /seed/${CONTAINER_TYPE}/steam/* /root/Steam/
+  cp -f /seed/misc/libksm_preload.so /server/
 fi
 
 root/steamcmd/steamcmd.sh +login $STEAM_CREDENTIALS +force_install_dir /server +app_update 294420 +quit
@@ -27,4 +28,4 @@ sed -i "s%^  <property name=\"ServerName\"[ \t]*value=\"My Game Host\"/>%  <prop
 
 function _shutdown() { { echo "saveworld"; sleep 1; echo "shutdown"; sleep 1; } | telnet 127.0.0.1 8081; }; trap _shutdown SIGTERM SIGINT
 
-ulimit -n 2048 && cd /server/ && ./7DaysToDieServer.x86_64 -logfile /dev/stdout -configfile=./serverconfig.xml -quit -batchmode -nographics -dedicated
+ulimit -n 2048 && cd /server/ && LD_PRELOAD=/server/libksm_preload.so ./7DaysToDieServer.x86_64 -logfile /dev/stdout -configfile=./serverconfig.xml -quit -batchmode -nographics -dedicated
