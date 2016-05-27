@@ -10,15 +10,15 @@ if [ -z "${STEAM_USER}" ]; then STEAM_CREDENTIALS="anonymous"; else STEAM_CREDEN
 #apt-get update && apt-get install -y rsync openssh-client && echo && echo "update complete, pausing..." && read && exit
 ## end seed update section
 
-if [ "$( find /server/ -type f | wc -l )" -lt "1" ]
-then
-  echo "copying seed across... this may take some time depending on the game size"
-  rm -Rf /server/* /root/Steam/* /root/steamcmd/*
-  cp -Rfs /seed/${CONTAINER_TYPE}/game/* /server/
-  cp -Rfs /seed/${CONTAINER_TYPE}/steamcmd/* /root/steamcmd/
-  cp -Rfs /seed/${CONTAINER_TYPE}/steam/* /root/Steam/
-  cp -f /seed/misc/libksm_preload.so /server/
-fi
+#if [ "$( find /server/ -type f | wc -l )" -lt "1" ]
+#then
+#  echo "copying seed across... this may take some time depending on the game size"
+#  rm -Rf /server/* /root/Steam/* /root/steamcmd/*
+#  cp -Rfs /seed/${CONTAINER_TYPE}/game/* /server/
+#  cp -Rfs /seed/${CONTAINER_TYPE}/steamcmd/* /root/steamcmd/
+#  cp -Rfs /seed/${CONTAINER_TYPE}/steam/* /root/Steam/
+#  cp -f /seed/misc/libksm_preload.so /server/
+#fi
 
 root/steamcmd/steamcmd.sh +login $STEAM_CREDENTIALS +force_install_dir /server +app_update 294420 +quit
 
