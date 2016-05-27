@@ -1,6 +1,6 @@
 #!/bin/bash
 
-read -p "pausing..."
+if [ ! -f /.pause ]; then read -p "pausing..."; fi
 
 ip route change default via 172.17.42.254
 if [ -z "${STEAM_USER}" ]; then STEAM_CREDENTIALS="anonymous"; else STEAM_CREDENTIALS="${STEAM_USERNAME} ${STEAM_PASSWORD}"; fi
@@ -21,6 +21,10 @@ if [ -z "${STEAM_USER}" ]; then STEAM_CREDENTIALS="anonymous"; else STEAM_CREDEN
 #  cp -Rfs /seed/${CONTAINER_TYPE}/steam/* /root/Steam/
 #  cp -f /seed/misc/libksm_preload.so /server/
 #fi
+
+unionfs-fuse -o cow,nonempty /overlay/server=RW:/seed/7d2d/game=RO /server
+unionfs-fuse -o cow,nonempty /overlay/root/steamcmd=RW:/seed/7d2d/steamcmd=RO /root/steamcmd
+unionfs-fuse -o cow,nonempty /overlay/root/Steam=RW:/seed/7d2d/steam=RO /root/Steam
 
 /root/steamcmd/steamcmd.sh +login $STEAM_CREDENTIALS +force_install_dir /server +app_update 294420 +quit
 
