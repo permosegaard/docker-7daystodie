@@ -1,6 +1,6 @@
 #!/bin/bash
 
-read
+read -p "pausing..."
 
 ip route change default via 172.17.42.254
 if [ -z "${STEAM_USER}" ]; then STEAM_CREDENTIALS="anonymous"; else STEAM_CREDENTIALS="${STEAM_USERNAME} ${STEAM_PASSWORD}"; fi
