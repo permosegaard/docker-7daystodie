@@ -1,13 +1,13 @@
 #!/bin/bash
 
-STEAM_APP_ID=294420
-
 if [ -f /overlay/.pause ]; then read -p "pausing..."; fi
+
+STEAM_APP_ID=294420
 
 ip route change default via 172.17.42.254
 if [ -z "${STEAM_USER}" ]; then STEAM_CREDENTIALS="anonymous"; else STEAM_CREDENTIALS="${STEAM_USERNAME} ${STEAM_PASSWORD}"; fi
 
-if [ -f /overlay/.seed ]
+if [ -f /overlay/.seed ] || [ -f /seed/${CONTAINER_TYPE}/seed ]
 then
   ## shell in and rsync /server/* and /root/{Steam,steamcmd}/* to host /seed/$type/{game,steam,steamcmd}
   curl -s "https://steamcdn-a.akamaihd.net/client/installer/steamcmd_linux.tar.gz" | tar -vzx -C "/root/steamcmd/"
@@ -16,14 +16,13 @@ then
 else
   if [ ! -f /overlay/.provisioned ]
   then
-    mkdir -p /server /root/{steamcmd,Steam} /overlay/{root,server,root-steamcmd,root-steam}
-    touch /overlay/.provisioned
+    mkdir -p /server /root/{steamcmd,Steam} /overlay/{data,mount}/{root,server,root-steamcmd,root-steam} && touch /overlay/.provisioned
   fi
   
-  unionfs-fuse -o cow,nonempty /overlay/root=RW:/root=RO /root
-  unionfs-fuse -o cow,nonempty /overlay/server=RW:/seed/${CONTAINER_TYPE}/game=RO /server
-  unionfs-fuse -o cow,nonempty /overlay/root-steamcmd=RW:/seed/${CONTAINER_TYPE}/steamcmd=RO /root/steamcmd
-  unionfs-fuse -o cow,nonempty /overlay/root-steam=RW:/seed/${CONTAINER_TYPE}/steam=RO /root/Steam
+  unionfs-fuse -o cow,nonempty /overlay/data/root=RW:/root=RO /overlay/mount/root && mount -o bind /overlay/mount/root /root
+  unionfs-fuse -o cow,nonempty /overlay/data/server=RW:/seed/${CONTAINER_TYPE}/game=RO /overlay/mount/server && mount -o bind /overlay/mount/server /server
+  unionfs-fuse -o cow,nonempty /overlay/data/root-steamcmd=RW:/seed/${CONTAINER_TYPE}/steamcmd=RO /overlay/mount/root-steamcmd && mount -o bind /overlay/mount/root-steamcmd /root/steamcmd
+  unionfs-fuse -o cow,nonempty /overlay/data/root-steam=RW:/seed/${CONTAINER_TYPE}/steam=RO /overlay/mount/root-steam && mount -o bind /overlay/mount/root-steam /root/Steam
   
   /root/steamcmd/steamcmd.sh +login ${STEAM_CREDENTIALS} +force_install_dir /server +app_update ${STEAM_APP_ID} +quit
 
