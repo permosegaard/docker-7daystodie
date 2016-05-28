@@ -11,7 +11,7 @@ if [ -z "${STEAM_USER}" ]; then STEAM_CREDENTIALS="anonymous"; else STEAM_CREDEN
 
 if [ -f /overlay/.seed ] || [ -f /seed/${CONTAINER_TYPE}/seed ]
 then
-  curl -s "https://steamcdn-a.akamaihd.net/client/installer/steamcmd_linux.tar.gz" | tar -vzx -C "/root/steamcmd/"
+  mkdir /root/steamcmd && curl -s "https://steamcdn-a.akamaihd.net/client/installer/steamcmd_linux.tar.gz" | tar -vzx -C "/root/steamcmd/"
   /root/steamcmd/steamcmd.sh +login ${STEAM_CREDENTIALS} +force_install_dir /server +app_update ${STEAM_APP_ID} +quit
   apt-get update && apt-get install -y rsync openssh-client && echo && echo "update complete, pausing..." && read && exit
 else
