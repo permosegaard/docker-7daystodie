@@ -22,6 +22,13 @@ if [ -z "${STEAM_USER}" ]; then STEAM_CREDENTIALS="anonymous"; else STEAM_CREDEN
 #  cp -f /seed/misc/libksm_preload.so /server/
 #fi
 
+if [ -f /.provisioned ]
+then
+  mkdir -p /overlay/root {,/overlay}/root/Steam {,/overlay}/root/steamcmd {,/overlay}/server
+  touch /.provisioned
+fi
+
+unionfs-fuse -o cow,nonempty /overlay/root=RW:/root=RO /root
 unionfs-fuse -o cow,nonempty /overlay/server=RW:/seed/7d2d/game=RO /server
 unionfs-fuse -o cow,nonempty /overlay/root/steamcmd=RW:/seed/7d2d/steamcmd=RO /root/steamcmd
 unionfs-fuse -o cow,nonempty /overlay/root/Steam=RW:/seed/7d2d/steam=RO /root/Steam
