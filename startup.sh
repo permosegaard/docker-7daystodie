@@ -1,5 +1,7 @@
 #!/bin/bash
 
+read -p "pausing..." && exit
+
 if [ -f /overlay/.pause ]; then read -p "pausing..."; fi
 
 STEAM_APP_ID=294420
