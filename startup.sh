@@ -11,20 +11,15 @@ if [ -z "${STEAM_USER}" ]; then STEAM_CREDENTIALS="anonymous"; else STEAM_CREDEN
 
 if [ -f /overlay/.seed ] || [ -f /seed/${CONTAINER_TYPE}/seed ]
 then
-  ## shell in and rsync /server/* and /root/{Steam,steamcmd}/* to host /seed/$type/{game,steam,steamcmd}
   curl -s "https://steamcdn-a.akamaihd.net/client/installer/steamcmd_linux.tar.gz" | tar -vzx -C "/root/steamcmd/"
   /root/steamcmd/steamcmd.sh +login ${STEAM_CREDENTIALS} +force_install_dir /server +app_update ${STEAM_APP_ID} +quit
   apt-get update && apt-get install -y rsync openssh-client && echo && echo "update complete, pausing..." && read && exit
 else
-  if [ ! -f /overlay/.provisioned ]
-  then
-    mkdir -p /server /root/{steamcmd,Steam} /overlay/{data,mount}/{root,server,root-steamcmd,root-steam} && touch /overlay/.provisioned
-  fi
-  
-  unionfs-fuse -o cow,nonempty /overlay/data/root=RW:/root=RO /overlay/mount/root && mount -o bind /overlay/mount/root /root
-  unionfs-fuse -o cow,nonempty /overlay/data/server=RW:/seed/${CONTAINER_TYPE}/game=RO /overlay/mount/server && mount -o bind /overlay/mount/server /server
-  unionfs-fuse -o cow,nonempty /overlay/data/root-steamcmd=RW:/seed/${CONTAINER_TYPE}/steamcmd=RO /overlay/mount/root-steamcmd && mount -o bind /overlay/mount/root-steamcmd /root/steamcmd
-  unionfs-fuse -o cow,nonempty /overlay/data/root-steam=RW:/seed/${CONTAINER_TYPE}/steam=RO /overlay/mount/root-steam && mount -o bind /overlay/mount/root-steam /root/Steam
+  if [ ! -f /overlay/.provisioned ]; then /overlay/{data,work}/{root,server,root-steamcmd,root-steam} /server/ && touch /overlay/.provisioned; fi
+  mount -t overlay overlay -o lowerdir=/seed/${CONTAINER_TYPE}/root,upperdir=/overlay/data/root,workdir=/overlay/work/root /root
+  mount -t overlay overlay -o lowerdir=/seed/${CONTAINER_TYPE}/server,upperdir=/overlay/data/server,workdir=/overlay/work/server /server
+  mkdir -p /root/steamcmd && mount -t overlay overlay -o lowerdir=/seed/${CONTAINER_TYPE}/root-steamcmd,upperdir=/overlay/data/root-steamcmd,workdir=/overlay/work/root-steamcmd /root/steamcmd
+  mkdir -p /root/Steam && mount -t overlay overlay -o lowerdir=/seed/${CONTAINER_TYPE}/root-steam,upperdir=/overlay/data/root-steam,workdir=/overlay/work/root-steam /root/Steam
   
   /root/steamcmd/steamcmd.sh +login ${STEAM_CREDENTIALS} +force_install_dir /server +app_update ${STEAM_APP_ID} +quit
 
