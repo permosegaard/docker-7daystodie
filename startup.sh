@@ -1,7 +1,5 @@
 #!/bin/bash
 
-read -p "pausing..." && exit
-
 if [ -f /overlay/.pause ]; then read -p "pausing..."; fi
 
 STEAM_APP_ID=294420
@@ -15,11 +13,11 @@ then
   /root/steamcmd/steamcmd.sh +login ${STEAM_CREDENTIALS} +force_install_dir /server +app_update ${STEAM_APP_ID} +quit && tar -cf /overlay/server.tar /server
   tar -cf /overlay/root-steamcmd.tar /root/steamcmd && tar -cf /overlay/root-steam.tar /root/Steam && echo "seed generation complete, pausing..." && read && exit
 else
-  if [ ! -f /overlay/.provisioned ]; then mkdir -p /overlay/{data,work}/{root,server,root-steamcmd,root-steam} /server/ && touch /overlay/.provisioned; fi
-  mount -t overlay overlay -o lowerdir=/seed/${CONTAINER_TYPE}/root,upperdir=/overlay/data/root,workdir=/overlay/work/root /root
-  mount -t overlay overlay -o lowerdir=/seed/${CONTAINER_TYPE}/game,upperdir=/overlay/data/server,workdir=/overlay/work/server /server
-  mkdir -p /root/steamcmd && mount -t overlay overlay -o lowerdir=/seed/${CONTAINER_TYPE}/root-steamcmd,upperdir=/overlay/data/root-steamcmd,workdir=/overlay/work/root-steamcmd /root/steamcmd
-  mkdir -p /root/Steam && mount -t overlay overlay -o lowerdir=/seed/${CONTAINER_TYPE}/root-steam,upperdir=/overlay/data/root-steam,workdir=/overlay/work/root-steam /root/Steam
+  if [ ! -f /overlay/.provisioned ]; then mkdir -p /overlay/{root,server,root-steamcmd,root-steam} /server/ && touch /overlay/.provisioned; fi
+  mount -t aufs -o noxino -o br=/overlay/root=rw:/seed/${CONTAINER_TYPE}/root=ro none /root
+  mount -t aufs -o noxino -o br=/overlay/server=rw:/seed/${CONTAINER_TYPE}/game=ro none /server
+  mkdir -p /root/steamcmd && mount -t aufs -o noxino -o br=/overlay/root-steamcmd=rw:/seed/${CONTAINER_TYPE}/root-steamcmd=ro none /root/steamcmd
+  mkdir -p /root/Steam && mount -t aufs -o noxino -o br=/overlay/root-steam=rw:/seed/${CONTAINER_TYPE}/root-steam=ro none /root/Steam
   
   /root/steamcmd/steamcmd.sh +login ${STEAM_CREDENTIALS} +force_install_dir /server +app_update ${STEAM_APP_ID} +quit
 
