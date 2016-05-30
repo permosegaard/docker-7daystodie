@@ -21,7 +21,7 @@ else
   
   /root/steamcmd/steamcmd.sh +login ${STEAM_CREDENTIALS} +force_install_dir /server +app_update ${STEAM_APP_ID} +quit
 
-  if [ ! -f /server/serveradmin.xml ]; then echo "" > /server/serveradmin.xml; fi
+  if [ ! -f /server/serveradmin.xml ]; then ln -s /root/.local/share/7DaysToDie/Saves/serveradmin.xml /server/serveradmin.xml; fi
   sed -i "s%^  <property name=\"ServerPort\"[ \t]*value=\"[0-9]*\"/>%  <property name=\"ServerPort\" value=\"${PORT_26900}\"/>%" /server/serverconfig.xml
   sed -i "s%^  <property name=\"ServerName\"[ \t]*value=\"My Game Host\"/>%  <property name=\"ServerName\" value=\"${CONTAINER_NAME}\"/>%" /server/serverconfig.xml
 
